@@ -18,11 +18,14 @@ class BaseWindow(tk.Tk):
         self.classes = [entities.ArcherFry, entities.WarriorFry, entities.RogueFry, entities.NecromancerFry]
 
         self.fry_list = []
-        for x in range(7):
-            for y in range(8):
+        for x in range(8):
+            temp = []
+            for y in range(5):
                 test = random.choice(self.classes)(self)
-                self.fry_list.append(test)
-                test.set_position(200+(x*100), 100+(y*120))
+                temp.append(test)
+                test.set_position(50+(y*100), 50+(x*130))
+                test.current_health = random.randint(0, test.health)
+            self.fry_list.append(temp)
 
         test2 = entities.Mod(self)
         test2.set_position(1300, 500)
@@ -33,18 +36,23 @@ class BaseWindow(tk.Tk):
         self.tick()
 
     def tick(self):
-        for i in range(5):
-            if i < len(self.current_fry):
-                if self.current_fry[i]:
-                    self.current_fry[i].set_position(self.current_fry_pos[i][0], self.current_fry_pos[i][1])
-            self.current_fry[i] = self.fry_list[self.current_fry_id]
-            self.current_fry_pos[i] = (self.current_fry[i].x, self.current_fry[i].y)
-            self.current_fry[i].set_position(self.winfo_screenwidth()/2, self.winfo_screenheight()/2 + ((i-2.5)*130))
-            if self.current_fry_id < ((len(self.fry_list) -1) / 5):
-                self.current_fry_id += 1
-            else:
-                self.current_fry_id = 0
-
+        self.next_fry_squad()
         self.after(1000, self.tick)  # 5 Ticks per second
+
+    def next_fry_squad(self):
+        for i in range(5):
+            if self.current_fry[i]:
+                self.current_fry[i].set_position(self.current_fry_pos[i][0], self.current_fry_pos[i][1])
+                self.current_fry[i].set_nametag(self.current_fry[i].name, "Basic")
+            self.current_fry[i] = self.fry_list[self.current_fry_id][i]
+            self.current_fry_pos[i] = (self.current_fry[i].x, self.current_fry[i].y)
+            self.current_fry[i].set_position(self.winfo_screenwidth()/2-100, self.winfo_screenheight()/2 + ((i-2.5)*130))
+            self.current_fry[i].set_nametag(self.current_fry[i].name, "Healthbar")
+
+        if self.current_fry_id < (len(self.fry_list) -1):
+            self.current_fry_id += 1
+        else:
+            self.current_fry_id = 0
+
 Game = BaseWindow()
 Game.mainloop()
