@@ -43,8 +43,16 @@ class Entity:
                                                   fill=self.colour)
 
     def set_position(self, x, y):
+        self.window.canvas.move(self.sprite, -self.x + x, -self.y + y)
+        self.window.canvas.move(self.nametag, -self.x + x, -self.y + y)
+        self.x = x
+        self.y = y
+
+    def move(self, x, y):
         self.window.canvas.move(self.sprite, x, y)
-        self.window.canvas.move(self.nametag, x, y + 70)
+        self.window.canvas.move(self.nametag, x, y)
+        self.x = x
+        self.y = y
 
 
 class Fry(Entity):
@@ -55,7 +63,7 @@ class Fry(Entity):
     nametag = "Basic"
     colour = "#7030ab"
     nametag_offset_x = 0
-    nametag_offset_y = 10
+    nametag_offset_y = 70
     combat_class = object
     Damage = 1
     Health = 5
@@ -88,6 +96,15 @@ class RogueFry(Fry):
     Health = 5
     Saves = 2
     sprite_path = "Assets/Sprites/Rogue.png"
+
+
+class NecromancerFry(Fry):
+    name = "Necromancer"
+    Damage = 0
+    Health = 15
+    Saves = 3
+    sprite_path = "Assets/Sprites/Rogue.png"
+    Revives = 4
 
 
 class Mod(Entity):
