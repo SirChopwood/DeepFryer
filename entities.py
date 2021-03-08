@@ -12,7 +12,7 @@ class Entity:
     sprite_flip = False
     nametag = str  # Basic, Boss, Healthbar
     nametag_offset_x = 0
-    nametag_offset_x = 0
+    nametag_offset_y = 0
     colour = str  # "#ffffff"
     damage = 1
     health = 5
@@ -68,10 +68,28 @@ class Entity:
                                                                  self.y + self.nametag_offset_y + 9,
                                                                  fill=self.colour))
 
-            self.nametag    .append(self.window.canvas.create_text(self.x + self.nametag_offset_x,
+            self.nametag.append(self.window.canvas.create_text(self.x + self.nametag_offset_x,
                                                             self.y + self.nametag_offset_y,
                                                             text=text, anchor="center",
                                                             font=self.window.font_basic,
+                                                            fill="#ffffff"))
+        elif type == "Bossbar":
+            self.nametag = []
+            self.nametag.append(self.window.canvas.create_rectangle(self.x + self.nametag_offset_x - 401,
+                                                                 self.y + self.nametag_offset_y - 30,
+                                                                 self.x + self.nametag_offset_x + 401,
+                                                                 self.y + self.nametag_offset_y + 25,
+                                                                 fill="#000000"))
+            self.nametag.append(self.window.canvas.create_rectangle(self.x + self.nametag_offset_x - 40,
+                                                                 self.y + self.nametag_offset_y - 14,
+                                                                 self.x + self.nametag_offset_x + (((self.current_health / self.health) * 80) - 40),
+                                                                 self.y + self.nametag_offset_y + 9,
+                                                                 fill=self.colour))
+
+            self.nametag.append(self.window.canvas.create_text(self.x + self.nametag_offset_x,
+                                                            self.y + self.nametag_offset_y,
+                                                            text=text, anchor="center",
+                                                            font=self.window.font_bigger,
                                                             fill="#ffffff"))
 
     def set_position(self, x, y):
@@ -146,3 +164,4 @@ class Mod(Entity):
     colour = "#ffffff"
     nametag_offset_x = 0
     nametag_offset_y = -200
+    health = 500

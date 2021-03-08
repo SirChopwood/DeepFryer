@@ -27,17 +27,19 @@ class BaseWindow(tk.Tk):
                 test.current_health = random.randint(0, test.health)
             self.fry_list.append(temp)
 
-        test2 = entities.Mod(self)
-        test2.set_position(1300, 500)
+        self.boss = entities.Mod(self)
+        self.boss.set_position(1500, 500)
         self.current_fry_id = 0
         self.current_fry = [None, None, None, None, None]
         self.current_fry_pos = [None, None, None, None, None]
-        random.shuffle(self.fry_list)
         self.tick()
 
     def tick(self):
-        self.next_fry_squad()
-        self.after(1000, self.tick)  # 5 Ticks per second
+        print(len(self.fry_list))
+        
+        for i in range(len(self.fry_list)):
+            self.next_fry_squad()
+        self.after(10, self.tick)
 
     def next_fry_squad(self):
         for i in range(5):
